@@ -1,0 +1,56 @@
+'NULL' != NULL: If there are NULL values in csv-file, they are defined as missing values by two consecutive separators.
+Defining NULL values with 'NULL' results in the string 'NULL' being added and not a missing value.
+- source/cpplocate/include/cpplocate/ModuleInfo.h;2;1;0.715639810427;;;NULL;;;;0;0;No;211;151;5;-;23
++ source/cpplocate/include/cpplocate/ModuleInfo.h;2;1;0.715639810427;;;;;;;0;0;No;211;151;5;-;23
+
+Consistent separator count: The number of separators in each line should be consistent. 
+-   source/liblocate/source/utils.c;0;0;0.0178571428571;4;10;getEnv; line 165;0.666666666667;3;23;6;3;No;224;4;33;3;91
+-   source/liblocate/source/liblocate.c;0;0;0.0219378427788;7;27;getExecutablePath; line 33;0.298850574713;3;124;5;4;No;547;12;57;3;282;16
++   source/liblocate/source/utils.c;0;0;0.0178571428571;4;10;getEnv; line 165;0.666666666667;3;23;6;3;No;224;4;33;3;91
++   source/liblocate/source/liblocate.c;0;0;0.0219378427788;7;27;getExecutablePath; line 33;0.298850574713;3;124;5;4;No;547;12;57;3;282
+
+Consistent Column Datatype: The datatype in one column should be consistent for each entry.
+-   IsGenerated	;Loc
+-   No	;211
+-   No	;131
+-   No	;229
+-   0	;No
+-   0	;No
+-   2	;No
+-   0	;149
+-   0	;113
+-   0	;No
+-   3	;No
+-   4	;No
+-   No	;208
+-   No	;243
+-   Yes	;8
+-   No	;56
+-   yes	;8
+
++   IsGenerated	;Loc
++   No	;211
++   No	;131
++   No	;229
++   No  ;0
++   No  ;0
++   No  ;2
++   No	;149
++   No	;113
++   No  ;0
++   No  ;3
++   No  ;4
++   No	;208
++   No	;243
++   Yes	;8
++   No	;56
++   yes	;8
+
+Conistent Boolean Naming: If a column is of type Boolean, only two different values should be used. 
+-   Yes	;8
+-   No	;56
+-   yes	;8
+
++   Yes	;8
++   No	;56
++   Yes	;8
