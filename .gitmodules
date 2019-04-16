@@ -1,0 +1,3 @@
+[submodule "ex1/qtbase"]
+	path = ex1/qtbase
+	url = https://code.qt.io/qt/qtbase.git
