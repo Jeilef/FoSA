@@ -11,5 +11,6 @@ for line in sys.stdin:
     else:
         authors[author] = [mail]
 
-for k in authors:
+keys = sorted(authors.keys(), key=lambda k: k.upper())
+for k in keys:
     print(k, " ".join(authors.get(k)))
