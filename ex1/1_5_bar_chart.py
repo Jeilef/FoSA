@@ -43,6 +43,10 @@ for line in metrics:
 remaining_symbols = args.columns - max_len
 
 for line in metrics:
-    padding = ' ' * (max_len - len(line[0]))
-    ascii_art = ART_SYMBOL * int(line[1] / max_value * remaining_symbols)
-    print(padding + line[0] + DELIMITER + ascii_art)
+	padding = ' ' * (max_len - len(line[0]))
+	ascii_art = ""
+	if(max_value == 0):
+		ascii_art = ART_SYMBOL * int(remaining_symbols)		
+	else:
+		ascii_art = ART_SYMBOL * int(line[1] / max_value * remaining_symbols)
+	print(padding + line[0] + DELIMITER + ascii_art)
