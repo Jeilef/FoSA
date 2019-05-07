@@ -1,3 +1,5 @@
+#example usage: git log --format="%an;<%ae>" | python3 1_3_author_consolidation.py
+
 import sys
 
 authors = {}

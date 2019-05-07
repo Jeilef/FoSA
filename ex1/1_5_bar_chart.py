@@ -1,3 +1,5 @@
+# Example Usage: python3 1_5_bar_chart.py --sort=desc --limit=10 --columns=100 < merged-metrics.csv
+
 import argparse, csv, sys
 
 ART_SYMBOL = '+'
@@ -5,15 +7,13 @@ DELIMITER = ' | '
 selected_attribute = ''
 metrics = []
 
-# Example Usage: python3 1_5_bar_chart.py --sort=desc --limit=10 --columns=100 < merged-metrics.csv
-
 parser = argparse.ArgumentParser(description='Process some metrics.')
-parser.add_argument('--attribute', '-a', type=str)
-parser.add_argument('--sort', '-s', type=str, choices=['asc', 'desc'])
-parser.add_argument('--limit', '-l', type=int)
-parser.add_argument('--hierarchical', '-H', action='store_true', default=False)
-parser.add_argument('--flat', '-F', action='store_true', default=False)
-parser.add_argument('--columns', '-c', type=int, default=80)
+parser.add_argument('--attribute', '-a', type=str, help='attribute of the file to visualize')
+parser.add_argument('--sort', '-s', type=str, choices=['asc', 'desc'], help='sort the output (ascending or descending)')
+parser.add_argument('--limit', '-l', type=int, help='limit the amount of displayed lines')
+parser.add_argument('--hierarchical', '-H', action='store_true', default=False, help='display full path of the filename')
+parser.add_argument('--flat', '-F', action='store_true', default=False, help='display only the filename (automatically active if --hierarchical is not set)')
+parser.add_argument('--columns', '-c', type=int, default=80, help='limit the width of the output')
 args = parser.parse_args()
 hierarchical = args.hierarchical and not args.flat
 
