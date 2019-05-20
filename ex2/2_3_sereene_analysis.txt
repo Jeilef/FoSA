@@ -1,0 +1,11 @@
+location	                                                Activity: Code Changes [Commits]
+openbsd/sys/net/if_vlan.c	                                13,00
+openbsd/usr.sbin/sysupgrade/sysupgrade.sh	                8,00
+openbsd/lib/libssl/t1_lib.c	                                7,00
+openbsd/regress/sys/arch/amd64/dump_tables/dump_tables.c	6,00
+openbsd/regress/lib/libutil/ber/ber_test_int_i.c	        5,00
+openbsd/sys/dev/pci/envy.c	                                5,00
+openbsd/sbin/vnconfig/vnconfig.c	                        4,00
+openbsd/usr.bin/tmux/status.c	                            4,00
+openbsd/usr.bin/tmux/tmux.h	                                4,00
+openbsd/distrib/armv7/miniroot/Makefile.inc	                3,00
