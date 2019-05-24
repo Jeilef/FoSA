@@ -12,7 +12,7 @@ def is_function_start(line):
     return line.find('def ') == 0
 
 
-def main(output_file, diagram_type):
+def analyse_input():
     function_meta_data = {}
     for line in sys.stdin:
         with open(line.rstrip("\n\r")) as input_file:
@@ -51,22 +51,35 @@ def main(output_file, diagram_type):
                 if current_function_name != '' or defining_function:
                     functions[current_function_name][0] += 1
         
-            for f in functions.values():
-                function_meta_data[f[1]] = function_meta_data.get(f[1], 0) + f[0]
-    
-    fig = plt.figure(1, figsize=(10, 10))
-    if diagram_type == "dot":
-        plt.scatter(list(function_meta_data.keys()), list(function_meta_data.values()))
-    else:
-        plt.boxplot(list(function_meta_data.items()))
-    plt.savefig(output_file + '-' + diagram_type + '.pdf', format="pdf")
+            for f, p in functions.values():
+                function_meta_data.setdefault(p, []).append(f)
+    return function_meta_data
 
-def test():
-    pass
+def visualize_data(data, output_file, diagram_type):
+    fig = plt.figure(1, figsize=(10, 10))
+    fig.subplots_adjust(top=0.8)
+    if diagram_type == "dot":
+        x_values = []
+        y_values = []
+        for key, values in data.items():
+            x_values.extend([key] * len(values))
+            y_values.extend(values)
+        plt.scatter(x_values, y_values)
+    else:
+        max_parameters = max(data) + 1
+        data_list = [[]] * max_parameters
+        for key, values in data.items():
+            data_list[key] = values
+        plt.boxplot(data_list, positions=list(range(max_parameters)), sym='')
+    plt.title('Function Analysis')
+    plt.xlabel('Number of Parameters')
+    plt.ylabel('Lines of Code (per function)')
+    plt.savefig(output_file, format="pdf")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser('XYZ')
-    parser.add_argument('--output', '-o', type=str, help='filename of output file (pdf)', default='result')
+    parser.add_argument('--output', '-o', type=str, help='filename of output file (pdf)', default='output.pdf')
     parser.add_argument('--type', '-t', type=str, choices=['dot', 'box'], help='output format of the diagram', default='dot')
     args = parser.parse_args()
-    main(args.output, args.type)
+    metrics = analyse_input()
+    visualize_data(metrics, args.output, args.type)
