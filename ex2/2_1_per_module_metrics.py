@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.6
 
 import subprocess
 import numpy as np
-import os
+import os, json
 import time
 
 
@@ -20,8 +20,8 @@ for root, dirs, files in os.walk("."):
 
 
 # Mean Time Between Changes
-history = subprocess.run(["git", "log", "--format=#%ct", "--name-only", "--since=\"1 year ago\" "], capture_output=True, text=True)
-output = list(filter(lambda x: is_cpp_file(x) and x in file_metrics, history.stdout.split("\n")))
+history = subprocess.run(["git", "log", "--format=#%ct", "--name-only", "--since=\"1 year ago\" "], stdout=subprocess.PIPE)
+output = list(filter(lambda x: is_cpp_file(x) and x in file_metrics, history.stdout.decode('UTF8').split("\n")))
 timestamp_dict ={}
 current_time = 0
 
@@ -44,8 +44,8 @@ for files, timestamps in timestamp_dict.items():
         file_metrics[files][0] = (int(time.time()) - timestamps[0]) / 60 / 60 / 24
 
 # NUMBER OF AUTHORS
-history = subprocess.run(["git", "log", "--format=#%ae", "--name-only", "--since=1 year ago "], capture_output=True, text=True)
-output = list(filter(lambda x: is_cpp_file(x) and x in file_metrics, history.stdout.split("\n")))
+history = subprocess.run(["git", "log", "--format=#%ae", "--name-only", "--since=1 year ago "], stdout=subprocess.PIPE)
+output = list(filter(lambda x: is_cpp_file(x) and x in file_metrics, history.stdout.decode('UTF8').split("\n")))
 
 author_dict = {}
 
@@ -56,17 +56,28 @@ for line in output:
         author_dict.setdefault(line, set()).add(current_time)
 
 for file, authors in author_dict.items():
-    file_metrics[file].append(len(authors))
+    file_metrics[file][1] = len(authors)
 
 
 # BOTCH FACTOR
 for file, metrics in file_metrics.items():
     noc = metrics[1]
     mtbc = metrics[0]
-    if mtbc == 0:
-        file_metrics[file].append(0)
-        continue
-    file_metrics[file].append(noc**2//mtbc)
+    if mtbc != 0:
+        file_metrics[file][2] = noc**2 // mtbc
 
-print(file_metrics)
+#Object Size per LoC 
+with open('./compile_commands.json') as json_file:
+    file_mapping = json.load(json_file)
+    for compile_entry in file_mapping:
+        working_directory = compile_entry['directory']
+        source_file_name = compile_entry['file']
+        source_file_line_count = 0
+        with open(source_file_name) as source_file:
+            source_file_line_count = len(list(enumerate(source_file))) 
+        object_file_name = compile_entry['command'].split('-o ')[1].split(' ')[0]
+        object_file_size = os.path.getsize(os.path.join(working_directory, object_file_name))
+        file_metrics['./' + os.path.relpath(source_file_name)][3] = object_file_size // source_file_line_count
 
+for file in file_metrics.keys():
+    pass
