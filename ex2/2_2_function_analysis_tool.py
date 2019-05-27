@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+#example usage: find * -iname "*.py" | ./2_2_function_analysis_tool.py --output result-box.pdf --type box
+
 import argparse, sys
 from matplotlib import pyplot as plt
 
@@ -82,4 +84,5 @@ if __name__ == "__main__":
     parser.add_argument('--type', '-t', type=str, choices=['dot', 'box'], help='output format of the diagram', default='dot')
     args = parser.parse_args()
     metrics = analyse_input()
+    print(metrics)
     visualize_data(metrics, args.output, args.type)
