@@ -9,6 +9,10 @@ def is_line_at_ind_zero(line):
     line = line.strip("\n")
     return len(line) == len(line.lstrip())
 
+def doSomething ( self, par1, par2, par3, **kwargs):
+    """Commentary"""
+    result = par1 + par2
+    return result
 
 def is_function_start(line):
     return line.find('def ') == 0
@@ -27,6 +31,10 @@ def analyse_input():
                 # Stop line counting if line is at ind. zero
                 if is_line_at_ind_zero(fileline) and not defining_function: 
                     current_function_name = ''
+
+                # count lines
+                if current_function_name != '':
+                    functions[current_function_name][0] += 1
 
                 # detect if function is starting
                 if is_function_start(fileline):
@@ -48,11 +56,7 @@ def analyse_input():
                         if function_parameters != '':
                             number_of_params = function_parameters.count(',') + 1
                         functions[current_function_name][1] = number_of_params
-                    
-                # count lines
-                if current_function_name != '' or defining_function:
-                    functions[current_function_name][0] += 1
-        
+                           
             for f, p in functions.values():
                 function_meta_data.setdefault(p, []).append(f)
     return function_meta_data
