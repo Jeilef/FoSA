@@ -28,9 +28,17 @@ for root, dirs, files in os.walk("."):
     file_path_start = root[:2]
     for name in files:
         if is_cpp_file(name):
+            # we set default values for the 5 metrics
+            # MTBC : 365 => Biggest possible interval in our timeframe, since our observed time is one year
+            # NoC : 0 => No commits = No authors
+            # BF : 0 => 0 / 365 = 0
+            # OSpLoC : 0 => No object file => 0 Bytes / LoC = 0
+            # SoVkC : 0 => No symbols found that start with vk
             file_metrics[os.path.relpath(os.path.join(root,name))] = [365, 0, 0, 0, 0]
 
 # Mean Time Between Changes
+# We assume a MTBC for Files with only one change during our timeframe from the date of the commit to the current date
+# We also assume a MTBC for Files with no commits of our max interval of 1 year 
 history = subprocess.run(["git", "log", "--format=#%ct", "--name-only", "--since=1 year ago "], stdout=subprocess.PIPE)
 history = history.stdout.decode('UTF8').split("\n")
 output = list(filter(lambda x: is_cpp_file(x) or '#' in x, history))
