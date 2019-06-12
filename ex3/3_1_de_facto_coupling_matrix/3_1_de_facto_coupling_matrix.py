@@ -29,6 +29,8 @@ def compute_de_facto_graph(output_file):
     de_facto_graph = [[0 for i in range(len(files))] for j in range(len(files))]
     files = list(files)
     authors = list(authors)
+    maximum = 0
+    minimum = 1000
 
     for f_mail, f_time in de_facto_dict:
         for s_mail, s_time in de_facto_dict:
@@ -39,7 +41,11 @@ def compute_de_facto_graph(output_file):
                     f_index = files.index(f_file)
                     for s_file in s_files:
                         s_index = files.index(s_file)
-                        de_facto_graph[f_index][s_index] += 1
+                        if s_index != f_index:
+                            de_facto_graph[f_index][s_index] += 1
+    maximum = max([max(x) for x in de_facto_graph])
+    minimum = min([min(x) for x in de_facto_graph])
+    print(maximum, minimum)
 
     #print(de_facto_graph)
 
@@ -48,18 +54,18 @@ def compute_de_facto_graph(output_file):
     ax.set_xticks(np.arange(len(files)))
     ax.set_yticks(np.arange(len(files)))
     # ... and label them with the respective list entries
-    ax.set_xticklabels(files)
-    ax.set_yticklabels(files)
-
+    ax.set_xticklabels(files, fontsize=1)
+    ax.set_yticklabels(files, fontsize=1)
+    
+    ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False) 
     # Rotate the tick labels and set their alignment.
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+    plt.setp(ax.get_xticklabels(), rotation=90, ha="left",
              rotation_mode="anchor")
 
-    ax.set_title("De Facto graph")
-    fig.tight_layout()
+    #fig.tight_layout()
     print("showing file")
-    plt.show()
-    plt.savefig(output_file)
+    #plt.show()
+    plt.savefig(output_file, bbox_inches='tight')
 
 
 if __name__ == "__main__":
