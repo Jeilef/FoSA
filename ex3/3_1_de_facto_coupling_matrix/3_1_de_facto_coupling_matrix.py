@@ -63,6 +63,6 @@ def compute_de_facto_graph(output_file):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser('XYZ')
-    parser.add_argument('output', type=str, help='filename of output file (pdf)', default='output.pdf')
+    parser.add_argument('output', type=str, help='filename of output file (pdf)', default='result.pdf')
     args = parser.parse_args()
     compute_de_facto_graph(args.output)
