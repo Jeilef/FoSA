@@ -61,6 +61,7 @@ def analyse_input():
                 function_meta_data.setdefault(p, []).append(f)
     return function_meta_data
 
+
 def visualize_data(data, output_file, diagram_type):
     fig = plt.figure(1, figsize=(10, 10))
     fig.subplots_adjust(top=0.8)
