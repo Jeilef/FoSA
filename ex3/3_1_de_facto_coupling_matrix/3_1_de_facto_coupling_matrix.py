@@ -28,9 +28,6 @@ def compute_de_facto_graph(output_file):
 
     de_facto_graph = [[0 for i in range(len(files))] for j in range(len(files))]
     files = list(files)
-    authors = list(authors)
-    maximum = 0
-    minimum = 1000
 
     for f_mail, f_time in de_facto_dict:
         for s_mail, s_time in de_facto_dict:
@@ -43,11 +40,7 @@ def compute_de_facto_graph(output_file):
                         s_index = files.index(s_file)
                         if s_index != f_index:
                             de_facto_graph[f_index][s_index] += 1
-    maximum = max([max(x) for x in de_facto_graph])
-    minimum = min([min(x) for x in de_facto_graph])
-    print(maximum, minimum)
 
-    #print(de_facto_graph)
 
     fig, ax = plt.subplots()
     im = ax.imshow(de_facto_graph, cmap='YlGn')
