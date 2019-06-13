@@ -1,5 +1,9 @@
 import subprocess, argparse, re
 from collections import Counter
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 def compare_commits(output_file):
     history = subprocess.run(["git", "log", "-p", "--format=?%ae"], capture_output=True, text=True)
@@ -24,8 +28,28 @@ def compare_commits(output_file):
                     bag_of_words_vector[index] += 1
             commits.append(bag_of_words_vector)
             current_commit = ""
-    
-    print(commits)
+
+    pca = PCA(n_components=2)
+    reduced_commits = pca.fit_transform(commits)
+
+    unique_authors = np.unique(author_history)
+    c = np.random.rand(len(unique_authors))
+
+    fig, ax = plt.subplots()
+
+    for u_index, u_author in enumerate(unique_authors):
+        xs = []
+        ys = []
+        for i, (x, y) in enumerate(reduced_commits):
+            if author_history[i] == u_author:
+                xs.append(x)
+                ys.append(y)
+        author_color = c[u_index]
+        print(author_color)
+        author_color_array = [author_color for _ in range(len(xs))]
+        ax.scatter(xs, ys, c=author_color_array, label=u_author)
+    plt.legend()
+    plt.show()
 
 
 if __name__ == "__main__":

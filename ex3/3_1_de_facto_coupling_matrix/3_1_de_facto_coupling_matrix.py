@@ -47,17 +47,19 @@ def compute_de_facto_graph(output_file):
     ax.set_xticks(np.arange(len(files)))
     ax.set_yticks(np.arange(len(files)))
     # ... and label them with the respective list entries
-    ax.set_xticklabels(files, fontsize=1)
-    ax.set_yticklabels(files, fontsize=1)
+    fontsize = max(1, min(9, 200//len(files)))
+    ax.set_xticklabels(files, fontsize=fontsize)
+    ax.set_yticklabels(files, fontsize=fontsize)
     
     ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False) 
     # Rotate the tick labels and set their alignment.
     plt.setp(ax.get_xticklabels(), rotation=90, ha="left",
              rotation_mode="anchor")
 
-    #fig.tight_layout()
+    fig.tight_layout()
     print("showing file")
     #plt.show()
+    fig.set_size_inches(20,20)
     plt.savefig(output_file, bbox_inches='tight')
 
 
