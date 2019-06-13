@@ -4,7 +4,7 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import numpy as np
 
-
+# This requires matplotlib version 3.1.0
 def compare_commits(output_file):
     history = subprocess.run(["git", "log", "-p", "--format=?%ae"], capture_output=True, text=True)
     history = history.stdout.split("\n")
@@ -36,20 +36,22 @@ def compare_commits(output_file):
     c = np.random.rand(len(unique_authors))
 
     fig, ax = plt.subplots()
+    author_colors = []
+    for u_author in author_history:
+        a_index = list(unique_authors).index(u_author)
+        author_colors.append(c[a_index])
 
-    for u_index, u_author in enumerate(unique_authors):
-        xs = []
-        ys = []
-        for i, (x, y) in enumerate(reduced_commits):
-            if author_history[i] == u_author:
-                xs.append(x)
-                ys.append(y)
-        author_color = c[u_index]
-        print(author_color)
-        author_color_array = [author_color for _ in range(len(xs))]
-        ax.scatter(xs, ys, c=author_color_array, label=u_author)
-    plt.legend()
-    plt.show()
+    xs = []
+    ys = []
+    for x, y in reduced_commits:
+        xs.append(x)
+        ys.append(y)
+    scatter = ax.scatter(xs, ys, c=author_colors)
+    handles, labels = scatter.legend_elements(num=len(unique_authors))
+    plt.legend(handles, unique_authors, loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.tight_layout()
+    fig.set_size_inches(10,10)
+    plt.savefig(output_file)
 
 
 if __name__ == "__main__":
