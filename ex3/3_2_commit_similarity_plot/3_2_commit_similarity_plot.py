@@ -32,7 +32,7 @@ def compare_commits(output_file):
             commits.append(bag_of_words_vector)
             current_commit = ""
 
-    pca = PCA(n_components=2)
+    pca = PCA(n_components=2, random_state=43)
     reduced_commits = pca.fit_transform(commits)
 
     unique_authors = np.unique(author_history)
