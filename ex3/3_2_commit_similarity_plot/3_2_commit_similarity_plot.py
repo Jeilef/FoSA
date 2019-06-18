@@ -3,6 +3,9 @@ from collections import Counter
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import numpy as np
+import random
+
+random.seed(43)
 
 # This requires matplotlib version 3.1.0
 def compare_commits(output_file):
@@ -46,11 +49,11 @@ def compare_commits(output_file):
     for x, y in reduced_commits:
         xs.append(x)
         ys.append(y)
-    scatter = ax.scatter(xs, ys, c=author_colors)
+    scatter = ax.scatter(xs, ys, c=author_colors, s=1)
     handles, labels = scatter.legend_elements(num=len(unique_authors))
-    plt.legend(handles, unique_authors, loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.legend(handles, unique_authors, loc='center left', bbox_to_anchor=(1, 0.2))
+    fig.set_size_inches(20, 10)
     plt.tight_layout()
-    fig.set_size_inches(10,10)
     plt.savefig(output_file)
 
 
