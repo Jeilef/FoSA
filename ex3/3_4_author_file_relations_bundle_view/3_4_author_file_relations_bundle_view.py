@@ -1,5 +1,5 @@
 import subprocess, argparse, os
-
+# example usage: python3 3_4_author_file_relations_bundle_view.py graph.txt
 
 def author_file_relations(outputfile):
     history = subprocess.run(["git", "log", "--format=?%ct?%ae", "--name-only"], capture_output=True, text=True)
