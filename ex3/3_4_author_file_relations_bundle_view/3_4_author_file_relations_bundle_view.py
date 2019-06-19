@@ -41,10 +41,10 @@ def author_file_relations(outputfile):
             vis_file.write("node;author;" + str(author) + ";" + str(noc_author[author]) + ";" + str(mtbc_author[author]) + "\n")
         vis_file.write("hierarchy;modules;" + str(len(mtbc_file)) + "\n")
         for module in mtbc_files:
-            vis_file.write("node;module;" + str(module) + ";" + str(mtbc_files[module]) + ";" + str(mtbc_files[module]) + "\n")
-        vis_file.write("edges;edits;" + str(len(base_data)) + "\n")
-
-        for _, author, module in base_data:
+            vis_file.write("node;module;" + str(module) + ";" + str(noc_file[module]) + ";" + str(mtbc_files[module]) + "\n")
+        edges = set([(author, module) for _, author, module in base_data])
+        vis_file.write("edges;edits;" + str(len(edges)) + "\n")
+        for author, module in edges:
             vis_file.write("edge;edit;" + author + ";" + module + "\n")
 
 
