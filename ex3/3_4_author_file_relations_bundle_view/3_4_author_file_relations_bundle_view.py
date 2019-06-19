@@ -1,4 +1,4 @@
-import subprocess, argparse
+import subprocess, argparse, os
 
 
 def author_file_relations(outputfile):
@@ -29,6 +29,11 @@ def author_file_relations(outputfile):
 
     mtbc_author = mtbc_on_dict(mtbc_author)
     mtbc_files = mtbc_on_dict(mtbc_file)
+
+    try:
+        os.remove(outputfile)
+    except OSError:
+        pass
 
     with open(outputfile, "w+") as vis_file:
         vis_file.write("hierarchy;authors;" + str(len(mtbc_author)) + "\n")
