@@ -17,6 +17,7 @@ def train_log_reg(train_dataset):
     cols = train_dataset.columns.values
     x = train_dataset[cols[:-1]].to_numpy()
     y = train_dataset[cols[-1]].to_numpy()
+    y = [i[0] for i in y]
     return LogisticRegression().fit(x, y)
 
 
