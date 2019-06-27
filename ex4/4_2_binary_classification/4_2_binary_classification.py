@@ -43,11 +43,11 @@ def save_error_values(model, train_dataset, predict_dataset):
     pred_wrong = 0
 
     for a, p in zip(train_actual, train_res):
-        if a != p:
+        if a != int(p):
             train_wrong += 1
 
     for a, p in zip(pred_actual, pred_res):
-        if a != p:
+        if a != int(p):
             pred_wrong += 1
 
     print("train error:", str(train_wrong*100/len(train_actual))+"%")
@@ -81,7 +81,8 @@ if __name__ == "__main__":
         model = train_svm(train_data)
 
     if args.output_error_values:
-        save_error_values()
+        print(args.type, "error report")
+        save_error_values(model, train_data, prediction_data)
     else:
         model_predict(model, prediction_data)
 
