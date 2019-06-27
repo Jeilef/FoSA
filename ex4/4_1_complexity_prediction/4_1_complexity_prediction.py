@@ -1,6 +1,5 @@
 import argparse
 from sklearn.linear_model import LinearRegression
-import numpy as np
 import pandas as pd
 
 
@@ -29,7 +28,7 @@ if __name__ == "__main__":
     parser.add_argument('--train', type=str, help='training dataset', default='training-data.csv')
     parser.add_argument('--predict', type=str, help='prediction dataset', default='prediction-data.csv')
     args = parser.parse_args()
-    print(args)
+
     model = train_model(args.train, args.training_columns, args.prediction_column)
     model_predict(model, args.predict, args.training_columns)
 
