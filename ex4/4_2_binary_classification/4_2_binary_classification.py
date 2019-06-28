@@ -1,4 +1,4 @@
-import argparse
+import argparse, os
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVR
 import pandas as pd
@@ -32,7 +32,7 @@ def model_predict(model, predict_dataset, printing=True):
     return prediction
 
 
-def save_error_values(model, train_dataset, predict_dataset):
+def save_error_values(model, train_dataset, predict_dataset, model_type):
     train_res = model_predict(model, train_dataset, printing=False)
     pred_res = model_predict(model, predict_dataset, printing=False)
 
@@ -50,8 +50,21 @@ def save_error_values(model, train_dataset, predict_dataset):
         if a != int(p):
             pred_wrong += 1
 
-    print("train error:", str(train_wrong*100/len(train_actual))+"%")
-    print("prediction error:", str(pred_wrong * 100 / len(pred_actual)) + "%")
+    type_string = model_type + " error report\n"
+    train_error = "train error: " + str(train_wrong*100/len(train_actual)) + "%\n"
+    pred_error = "prediction error: " + str(pred_wrong * 100 / len(pred_actual)) + "%"
+    output_string = type_string + train_error + pred_error
+    with open(model_type + '-error-report.txt', 'w') as error_file:
+        error_file.write(output_string)
+        print(output_string)
+    if os.path.exists('support-vector-machine-error-report.txt') and os.path.exists('logistic-regression-error-report.txt'):
+        with open('error-report.txt', 'w') as error_report:
+            with open('logistic-regression-error-report.txt') as lr_report:
+                error_report.write(lr_report.read())
+            error_report.write('\n\n')
+            with open('support-vector-machine-error-report.txt') as svm_report:
+                error_report.write(svm_report.read())
+
 
 
 def actual_values(dataset):
@@ -61,7 +74,7 @@ def actual_values(dataset):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser('FSA')
-    parser.add_argument('--type', type=str, help='which kind of regression', choices=["Logistic-regression", "support-vector-machine"])
+    parser.add_argument('--type', type=str, help='which kind of regression', choices=["logistic-regression", "support-vector-machine"])
     parser.add_argument('--output-error-values', action='store_true', default=False, help='display error values instead of output')
 
     parser.add_argument('--train', type=str, help='training dataset', default='MC2-train.arff')
@@ -75,14 +88,13 @@ if __name__ == "__main__":
     prediction_data = pd.DataFrame(arff.loadarff(args.predict)[0])
     prediction_data = prediction_data.fillna(0)
 
-    if args.type == "Logistic-regression":
+    if args.type == "logistic-regression":
         model = train_log_reg(train_data)
     else:
         model = train_svm(train_data)
 
     if args.output_error_values:
-        print(args.type, "error report")
-        save_error_values(model, train_data, prediction_data)
+        save_error_values(model, train_data, prediction_data, args.type)
     else:
         model_predict(model, prediction_data)
 
