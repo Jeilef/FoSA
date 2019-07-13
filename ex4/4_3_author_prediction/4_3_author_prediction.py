@@ -17,7 +17,7 @@ def voronoi(input_line, author_changes, lines_history, show):
     transformed_document = transformed_authors[-1]
     transformed_authors = transformed_authors[:-1]
 
-    diagram = Voronoi(transformed_authors, incremental=True)
+    diagram = Voronoi(transformed_authors)
     fig = voronoi_plot_2d(diagram)
 
     distances = np.linalg.norm([transformed_document - author for author in diagram.points], axis=1)
@@ -26,8 +26,11 @@ def voronoi(input_line, author_changes, lines_history, show):
     print(input_line + ';' + nearest_author)
 
     if show:
-        print(transformed_document)
-        plt.plot([transformed_document], "ro")
+        plt.plot(transformed_document[0], transformed_document[1], "ro")
+
+        for i, p in enumerate(transformed_authors):
+            plt.annotate(list(author_changes.keys())[i], p)
+
         plt.show()
 
 
