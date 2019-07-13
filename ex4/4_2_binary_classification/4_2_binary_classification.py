@@ -32,6 +32,7 @@ def model_predict(model, predict_dataset, printing=True):
     return prediction
 
 
+# to get the summary both logistic-regression and support-vector-machines have to be run once with the output errors option
 def save_error_values(model, train_dataset, predict_dataset, model_type):
     train_res = model_predict(model, train_dataset, printing=False)
     pred_res = model_predict(model, predict_dataset, printing=False)
@@ -64,7 +65,6 @@ def save_error_values(model, train_dataset, predict_dataset, model_type):
             error_report.write('\n\n')
             with open('support-vector-machine-error-report.txt') as svm_report:
                 error_report.write(svm_report.read())
-
 
 
 def actual_values(dataset):
